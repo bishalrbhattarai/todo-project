@@ -5,8 +5,6 @@ export function convertToGraphQLType<T>(
   document: Document,
   type: new () => T,
 ): T {
-  console.log("Each Document");
-  console.log(document);
   const docObject = document.toObject();
 
   if (docObject._id) {

@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { GraphqlModule } from './graphql/graphql.module';
 import { AppResolver } from './app.resolver';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { AppResolver } from './app.resolver';
     CommonModule,
     UserModule,
     GraphqlModule,
+    TodoModule,
   ],
   providers: [AppResolver],
 })
