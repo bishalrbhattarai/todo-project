@@ -1,0 +1,52 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserType {
+  id: ID!
+  name: String!
+  email: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type CreateUserResponse {
+  message: String!
+  data: UserType!
+}
+
+type PaginationMeta {
+  totalItems: Int!
+  limit: Int!
+  page: Int!
+  totalPages: Int!
+}
+
+type GetUsersResponse {
+  data: [UserType!]!
+  meta: PaginationMeta!
+}
+
+type Query {
+  healthCheck: String!
+  getUsers(input: OffsetPaginationInput): GetUsersResponse!
+}
+
+input OffsetPaginationInput {
+  page: Int! = 1
+  limit: Int! = 10
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): CreateUserResponse!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+}
