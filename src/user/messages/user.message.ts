@@ -1,10 +1,13 @@
 export const UserResponseMessage = {
   successMessage: {
     userCreated: 'User created successfully',
-    usersFetched:"Users fetched successfully",
+    usersFetched: 'Users fetched successfully',
+    userUpdated: 'User updated successfully',
+    userDeleted:" User deleted successfully",
   },
   errorMessage: {
     userNotFound: 'User not found',
+    userNotUpdated: 'User not updated',
     userAlreadyExists: 'User already exists',
     invalidCredentials: 'Invalid credentials',
     passwordMismatch: 'Passwords do not match',

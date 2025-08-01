@@ -15,6 +15,22 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type TodoType {
+  id: ID!
+  title: String!
+  status: TodoStatusEnum!
+  userId: String!
+  user: UserType!
+}
+
+"""The status of a todo item"""
+enum TodoStatusEnum {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
 type CreateUserResponse {
   message: String!
   data: UserType!
@@ -32,9 +48,52 @@ type GetUsersResponse {
   meta: PaginationMeta!
 }
 
+type UpdateUserResponse {
+  message: String!
+  data: UserType!
+}
+
+type DeleteUserResponse {
+  message: String!
+  data: UserType!
+}
+
+type CreateTodoResponse {
+  message: String!
+  data: TodoType!
+}
+
+type GetTodoResponse {
+  message: String!
+  data: TodoType!
+}
+
+type GetTodosResponse {
+  data: [TodoType!]!
+  meta: PaginationMeta!
+}
+
+type getTodosByUserId {
+  data: [TodoType!]!
+  meta: PaginationMeta!
+}
+
+type UpdateTodoResponse {
+  message: String!
+  data: TodoType!
+}
+
+type DeleteTodoResponse {
+  message: String!
+  data: TodoType!
+}
+
 type Query {
   healthCheck: String!
   getUsers(input: OffsetPaginationInput): GetUsersResponse!
+  getTodo(id: String!): GetTodoResponse!
+  getTodos(input: OffsetPaginationInput): GetTodosResponse!
+  getTodosByUserId(userId: String!, input: OffsetPaginationInput): getTodosByUserId!
 }
 
 input OffsetPaginationInput {
@@ -44,9 +103,35 @@ input OffsetPaginationInput {
 
 type Mutation {
   createUser(input: CreateUserInput!): CreateUserResponse!
+  deleteUser(id: String!): DeleteUserResponse!
+  updateUser(id: String!, input: UpdateUserInput!): UpdateUserResponse!
+  updateTodo(id: String!, input: UpdateTodoInput!): UpdateTodoResponse!
+  deleteTodo(id: String!): DeleteTodoResponse!
+  createTodo(input: CreateTodoInput!): CreateTodoResponse!
 }
 
 input CreateUserInput {
   name: String!
   email: String!
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+}
+
+input UpdateTodoInput {
+  title: String
+  status: TodoStatusEnum
+}
+
+input CreateTodoInput {
+  title: String!
+  status: TodoStatusEnum!
+  userId: String!
+}
+
+type Subscription {
+  todoAdded: TodoType!
+  todoDeleted: TodoType!
 }

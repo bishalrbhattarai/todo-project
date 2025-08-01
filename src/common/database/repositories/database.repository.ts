@@ -1,4 +1,11 @@
-import { Document, FilterQuery, Model, MongooseOptions, ProjectionFields } from 'mongoose';
+import {
+  Document,
+  FilterQuery,
+  Model,
+  MongooseOptions,
+  ProjectionFields,
+  UpdateQuery,
+} from 'mongoose';
 import {
   IDatabaseInterface,
   IPaginatedResponse,
@@ -13,8 +20,28 @@ export abstract class DatabaseRepository<T extends Document>
     return this.Tmodel.findOne({ email }).exec();
   }
 
+  deleteOne(filter: FilterQuery<T>): Promise<T | null> {
+    return this.Tmodel.findOneAndDelete(filter, { new: true }).exec();
+  }
+
+  updateById(
+    id: string,
+    input: UpdateQuery<T>,
+    options: Record<string, any> = { new: true },
+  ) {
+    return this.Tmodel.findByIdAndUpdate(id, input, options).exec();
+  }
+
   create(data: Partial<T>): Promise<T> {
     return this.Tmodel.create(data);
+  }
+
+  findById(id: string): Promise<T | null> {
+    return this.Tmodel.findById(id).exec();
+  }
+
+  deleteById(id: string): Promise<T | null> {
+    return this.Tmodel.findByIdAndDelete(id).exec();
   }
 
   async findPaginated(

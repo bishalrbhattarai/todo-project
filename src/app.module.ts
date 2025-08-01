@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { GraphqlModule } from './graphql/graphql.module';
 import { AppResolver } from './app.resolver';
 import { TodoModule } from './todo/todo.module';
+import { PubSubModule } from './pubsub/pubsub.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { TodoModule } from './todo/todo.module';
     UserModule,
     GraphqlModule,
     TodoModule,
+    PubSubModule,
   ],
   providers: [AppResolver],
 })

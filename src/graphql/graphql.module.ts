@@ -11,11 +11,14 @@ import { GraphQLError } from 'graphql';
       autoSchemaFile: 'schema.gql',
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      subscriptions: {
+        'graphql-ws': true,
+      },
       formatError: (error: GraphQLError) => {
         return {
           message: error.message,
           code: error.extensions?.code,
-          details: error.extensions?.originalError|| [],
+          details: error.extensions?.originalError || [],
         };
       },
     }),

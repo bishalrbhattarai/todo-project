@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { TodoStatusEnum } from '../enums/todo-status.enum';
 
 @Schema({
@@ -15,6 +15,9 @@ export class Todo {
     default: TodoStatusEnum.PENDING,
   })
   status: TodoStatusEnum;
+
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  userId: string;
 }
 
 export type TodoDocument = Todo & Document;
