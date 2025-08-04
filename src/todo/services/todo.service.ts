@@ -24,6 +24,7 @@ import { DeleteTodoResponse } from '../dtos/responses/delete-todo.response';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { PUB_SUB } from 'src/pubsub/pubsub.provider';
 import { TODO_ADDED, TODO_DELETED } from '../channels/todo.channel';
+import { UserType } from 'src/user/types/user.type';
 
 @Injectable()
 export class TodoService {
@@ -38,7 +39,25 @@ export class TodoService {
     return this.todoRepository.deleteOne({ userId: id });
   }
 
-  async deleteTodo(id: string): Promise<DeleteTodoResponse> {
+  async deleteTodo(id: string, user: UserType): Promise<DeleteTodoResponse> {
+    
+    const foundTodo: TodoDocument | null = await this.todoRepository.findOne({
+      _id: id,
+      userId: user.id,
+    });
+
+    if (!foundTodo) {
+      throw new NotFoundException(
+        TodoResponseMessage.errorMessage.todoNotFound,
+      );
+    }
+
+    if (foundTodo.userId !== user.id) {
+      throw new NotFoundException(
+        TodoResponseMessage.errorMessage.notAuthorizedToDeleteTodo,
+      );
+    }
+
     const deletedTodo: TodoDocument | null =
       await this.todoRepository.deleteById(id);
     if (!deletedTodo)
@@ -130,16 +149,28 @@ export class TodoService {
     };
   }
 
-  async createTodo(input: CreateTodoInput): Promise<CreateTodoResponse> {
+  async createTodo(
+    input: CreateTodoInput,
+    user: UserType,
+  ): Promise<CreateTodoResponse> {
+    console.log('yo chai custom decorator bata ako user ho hai');
+    console.log(user);
     const userExists: UserDocument | null = await this.userService.getUserById(
-      input.userId,
+      user.id,
     );
+    console.log('the user exists logging');
+    console.log(userExists);
+
     if (!userExists) {
+      console.log('inside the !userExists condition');
       throw new NotFoundException(
         UserResponseMessage.errorMessage.userNotFound,
       );
     }
-    const TodoDocument: TodoDocument = await this.todoRepository.create(input);
+    const TodoDocument: TodoDocument = await this.todoRepository.create({
+      ...input,
+      userId: user.id,
+    });
     const mappedTodoType = convertToGraphQLType<TodoType>(
       TodoDocument,
       TodoType,

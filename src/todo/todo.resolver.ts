@@ -13,7 +13,7 @@ import { TodoType } from './types/todo.type';
 import { CreateTodoResponse } from './dtos/responses/create-todo.response';
 import { UserType } from 'src/user/types/user.type';
 import { UserService } from 'src/user/services/user.service';
-import { Inject, NotFoundException } from '@nestjs/common';
+import { Inject, NotFoundException, UseGuards } from '@nestjs/common';
 import { UserResponseMessage } from 'src/user/messages/user.message';
 import { GetTodoResponse } from './dtos/responses/get-todo.response';
 import { OffsetPaginationInput } from 'src/common/dtos/inputs/offset-pagination.input';
@@ -25,8 +25,11 @@ import { DeleteTodoResponse } from './dtos/responses/delete-todo.response';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { PUB_SUB } from 'src/pubsub/pubsub.provider';
 import { TODO_ADDED, TODO_DELETED } from './channels/todo.channel';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 
 @Resolver(() => TodoType)
+@UseGuards(JwtAuthGuard)
 export class TodoResolver {
   constructor(
     private readonly todoService: TodoService,
@@ -64,8 +67,11 @@ export class TodoResolver {
   }
 
   @Mutation(() => DeleteTodoResponse)
-  deleteTodo(@Args('id') id: string): Promise<DeleteTodoResponse> {
-    return this.todoService.deleteTodo(id);
+  deleteTodo(
+    @Args('id') id: string,
+    @CurrentUser() user: UserType,
+  ): Promise<DeleteTodoResponse> {
+    return this.todoService.deleteTodo(id,user);
   }
 
   @Query(() => getTodosByUserId)
@@ -79,8 +85,9 @@ export class TodoResolver {
   @Mutation(() => CreateTodoResponse)
   createTodo(
     @Args('input') input: CreateTodoInput,
+    @CurrentUser() user: UserType,
   ): Promise<CreateTodoResponse> {
-    return this.todoService.createTodo(input);
+    return this.todoService.createTodo(input, user);
   }
 
   @Subscription(() => TodoType, {

@@ -15,8 +15,4 @@ export class CreateTodoInput {
   @IsEnum(TodoStatusEnum)
   status: TodoStatusEnum;
 
-  @Field()
-  @IsNotEmpty()
-  @IsString()
-  userId: string;
 }

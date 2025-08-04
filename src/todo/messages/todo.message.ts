@@ -11,5 +11,6 @@ export const TodoResponseMessage = {
     invalidTodoData: 'Invalid todo data provided',
     todoUpdateFailed: 'Failed to update todo information',
     todoDeletionFailed: 'Failed to delete todo',
+    notAuthorizedToDeleteTodo: 'You are not authorized to delete this todo',
   },
 };

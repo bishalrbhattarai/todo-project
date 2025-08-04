@@ -88,12 +88,18 @@ type DeleteTodoResponse {
   data: TodoType!
 }
 
+type LoginResponse {
+  message: String!
+  accessToken: String!
+}
+
 type Query {
   healthCheck: String!
   getUsers(input: OffsetPaginationInput): GetUsersResponse!
   getTodo(id: String!): GetTodoResponse!
   getTodos(input: OffsetPaginationInput): GetTodosResponse!
   getTodosByUserId(userId: String!, input: OffsetPaginationInput): getTodosByUserId!
+  me: String!
 }
 
 input OffsetPaginationInput {
@@ -109,7 +115,7 @@ type Mutation {
   deleteTodo(id: String!): DeleteTodoResponse!
   createTodo(input: CreateTodoInput!): CreateTodoResponse!
   register(input: CreateUserInput!): CreateUserResponse!
-  login(email: String!, password: String!): UserType!
+  login(email: String!, password: String!): LoginResponse!
 }
 
 input CreateUserInput {
@@ -131,7 +137,6 @@ input UpdateTodoInput {
 input CreateTodoInput {
   title: String!
   status: TodoStatusEnum!
-  userId: String!
 }
 
 type Subscription {

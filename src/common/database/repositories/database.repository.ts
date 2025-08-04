@@ -20,6 +20,10 @@ export abstract class DatabaseRepository<T extends Document>
     return this.Tmodel.findOne({ email }).exec();
   }
 
+  findOne(filter: FilterQuery<T>): Promise<T | null> {
+    return this.Tmodel.findOne(filter).exec();
+  }
+
   deleteOne(filter: FilterQuery<T>): Promise<T | null> {
     return this.Tmodel.findOneAndDelete(filter, { new: true }).exec();
   }
