@@ -83,7 +83,11 @@ export class TodoResolver {
     return this.todoService.createTodo(input);
   }
 
-  @Subscription(() => TodoType)
+  @Subscription(() => TodoType, {
+    filter: (payload, variables) => {
+      return payload.todoAdded.userId === variables.userId;
+    },
+  })
   todoAdded() {
     return this.pubSub.asyncIterator(TODO_ADDED);
   }

@@ -14,9 +14,12 @@ import { GraphQLError } from 'graphql';
       subscriptions: {
         'graphql-ws': true,
       },
+      context: ({ req }) => ({ req }),
       formatError: (error: GraphQLError) => {
         return {
           message: error.message,
+         locations: error.locations,
+         path: error.path,
           code: error.extensions?.code,
           details: error.extensions?.originalError || [],
         };

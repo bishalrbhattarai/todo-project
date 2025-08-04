@@ -108,11 +108,14 @@ type Mutation {
   updateTodo(id: String!, input: UpdateTodoInput!): UpdateTodoResponse!
   deleteTodo(id: String!): DeleteTodoResponse!
   createTodo(input: CreateTodoInput!): CreateTodoResponse!
+  register(input: CreateUserInput!): CreateUserResponse!
+  login(email: String!, password: String!): UserType!
 }
 
 input CreateUserInput {
   name: String!
   email: String!
+  password: String!
 }
 
 input UpdateUserInput {

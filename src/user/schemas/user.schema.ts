@@ -8,6 +8,9 @@ export class User {
 
   @Prop({ unique: true })
   email: string;
+
+  @Prop()
+  password: string;
 }
 
 export type UserDocument = User & Document;

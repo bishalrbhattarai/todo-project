@@ -26,6 +26,10 @@ export class UserService {
     private readonly userRepository: UserRepository,
   ) {}
 
+  async findByEmail(email: string): Promise<UserDocument | null> {
+    return this.userRepository.findByEmail(email);
+  }
+
   async deleteUser(id: string): Promise<DeleteUserResponse> {
     const foundUser = await this.userRepository.findById(id);
     if (!foundUser) {

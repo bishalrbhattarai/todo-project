@@ -14,4 +14,9 @@ export class CreateUserInput {
   @IsEmail({}, { message: 'Email must be a valid email address' })
   @MinLength(4, { message: 'Email must be at least 5 characters long' })
   email: string;
+
+  @Field()
+  @IsNotEmpty({ message: 'Password is required' })
+  @IsString({ message: 'Password must be a string' })
+  password: string;
 }
