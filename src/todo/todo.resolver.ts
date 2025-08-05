@@ -62,8 +62,12 @@ export class TodoResolver {
   }
 
   @Mutation(() => UpdateTodoResponse)
-  updateTodo(@Args('id') id: string, @Args('input') input: UpdateTodoInput) {
-    return this.todoService.updateTodo(id, input);
+  updateTodo(
+    @Args('id') id: string,
+    @Args('input') input: UpdateTodoInput,
+    @CurrentUser() user: UserType,
+  ) {
+    return this.todoService.updateTodo(id, input,user);
   }
 
   @Mutation(() => DeleteTodoResponse)
@@ -71,7 +75,7 @@ export class TodoResolver {
     @Args('id') id: string,
     @CurrentUser() user: UserType,
   ): Promise<DeleteTodoResponse> {
-    return this.todoService.deleteTodo(id,user);
+    return this.todoService.deleteTodo(id, user);
   }
 
   @Query(() => getTodosByUserId)
